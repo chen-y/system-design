@@ -4,4 +4,6 @@ export const Path = {
   SIGNUP: '/signup',
   HOME: '/home',
   PERMISSION: '/permission',
+  ROLES: '/roles',
+  USERS: '/users',
 }

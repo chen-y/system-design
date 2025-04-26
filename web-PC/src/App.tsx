@@ -3,17 +3,12 @@ import router from './router'
 import { ConfigProvider } from 'antd'
 import './App.css'
 import auth from './utils/auth'
-import { useEffect } from 'react'
+
+if (!auth.check()) {
+  auth.reLogin()
+}
 
 function App() {
-  useEffect(() => {
-    console.info(!auth.check())
-    if (!auth.check()) {
-      router.navigate({
-        pathname: '/login',
-      })
-    }
-  }, [])
   return (
     <ConfigProvider>
       <RouterProvider router={router} />

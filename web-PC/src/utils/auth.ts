@@ -6,6 +6,9 @@ import {
 } from '@/constants/auth'
 import storage from './storage'
 import { AuthEntity } from '@/api/auth.d'
+import request from '@/api/utils'
+// import router from '@/router'
+import { Path } from '@/constants/path'
 
 class AuthField {
   accessToken?: string
@@ -30,6 +33,7 @@ class Auth extends AuthField {
   }
 
   check() {
+    console.info(this.checkTokenValid(), this.checkRTokenValid())
     const isValid = this.checkTokenValid() && this.checkRTokenValid()
     return isValid
   }
@@ -72,7 +76,34 @@ class Auth extends AuthField {
     )
   }
 
+  async reLogin() {
+    if (this.checkTokenValid()) {
+      return
+    }
+    if (this.checkRTokenValid()) {
+      try {
+        const result = await request.post(
+          '/auth/refresh',
+          {
+            refreshToken: this.refreshToken,
+          },
+          { secret: false }
+        )
+        this.setAuthResult(result.data.data)
+        return result
+      } catch (error) {
+        this.logout()
+        throw error
+      }
+    }
+
+    this.logout()
+  }
+
   logout() {
+    if (window.location.pathname?.includes(Path.LOGIN)) {
+      return
+    }
     this.accessToken = undefined
     this.refreshToken = undefined
     this.accessTokenExpires = undefined

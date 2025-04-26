@@ -34,6 +34,14 @@ const router = createBrowserRouter([
         path: Path.PERMISSION,
         element: lazyLoading(lazy(() => import('../pages/permission'))),
       },
+      {
+        path: Path.ROLES,
+        element: lazyLoading(lazy(() => import('../pages/roles'))),
+      },
+      {
+        path: Path.USERS,
+        element: lazyLoading(lazy(() => import('../pages/users'))),
+      },
     ],
   },
   {
