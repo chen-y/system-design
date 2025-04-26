@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: system-design
+  # mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/my_system
+    datasource:
+      username: chen_yi
+      password: 111111
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  # docker
+  docker:
+    compose:
+      lifecycle-management: start-and-stop
+
+  # secret
+  jwt:
+    secret: 'tk3GJ/jZtpnNIiIJNf1EmqYXjEFVeGCnBmB+ZgqC/lA='
