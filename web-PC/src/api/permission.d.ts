@@ -17,3 +17,12 @@ export interface Permission {
 }
 
 export type PermissionListResult = CommonResult<Permission[]>
+
+export type CreatePermissionRequest = Omit<
+  Permission,
+  'id' | 'createdAt' | 'updatedAt' | 'subs'
+>
+
+export type CreatePermissionResult = CommonResult<Permission>
+
+export type RemovePermissionResult = CommonResult<boolean>

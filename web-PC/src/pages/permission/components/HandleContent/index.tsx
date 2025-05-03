@@ -1,7 +1,8 @@
 import { Form, FormInstance, Input, Radio, Cascader } from 'antd'
 
-import { PermissionType } from '@/api/permission.d'
-import { PropsWithChildren } from 'react'
+import { PermissionType, Permission } from '@/api/permission.d'
+import { PropsWithChildren, useEffect, useMemo } from 'react'
+import { permissionTypeMap } from '@/utils/permission'
 
 export enum HandleTypes {
   ADD = 'add',
@@ -13,33 +14,37 @@ export interface PermissionFormValues {
   type: PermissionType
   value: string
   description: string
-  parent: string[]
+  parent: number[]
 }
 
-interface PermissionHandleContentProps {
+export interface PermissionHandleContentProps {
   form?: FormInstance<PermissionFormValues>
+  permissions?: Permission[]
 }
 
 const PermissionHandleContent = (
   props: PropsWithChildren<PermissionHandleContentProps>
 ) => {
-  const { form: injectForm } = props
+  const { form: injectForm, permissions } = props
   const [form] = Form.useForm<PermissionFormValues>(injectForm)
 
-  const permissionTypes = [
-    {
-      label: '菜单',
-      value: PermissionType.MENU,
-    },
-    {
-      label: '模块',
-      value: PermissionType.MODULE,
-    },
-    {
-      label: '按钮',
-      value: PermissionType.BUTTON,
-    },
-  ]
+  const parentTree = useMemo(() => {
+    const genTree = (list: Permission[]): Array<any> => {
+      return list.map((permission) => {
+        const subs = permission.subs
+        return {
+          value: permission.id,
+          label: permission.name,
+          children: subs ? genTree(subs) : null,
+          isLeaf: !subs?.length,
+        }
+      })
+    }
+    return genTree(permissions || [])
+  }, [permissions])
+
+  const permissionTypes = Array.from(permissionTypeMap.entries())
+
   return (
     <div>
       <Form
@@ -67,9 +72,9 @@ const PermissionHandleContent = (
           ]}
         >
           <Radio.Group>
-            {permissionTypes.map((item) => (
-              <Radio key={item.value} value={item.value}>
-                {item.label}
+            {permissionTypes.map(([type, entity]) => (
+              <Radio key={type} value={type}>
+                {entity.name}
               </Radio>
             ))}
           </Radio.Group>
@@ -87,19 +92,7 @@ const PermissionHandleContent = (
           <Input placeholder="/route1 | btn-save" />
         </Form.Item>
         <Form.Item label="上级" name="parent">
-          <Cascader
-            placeholder="/a/b/c"
-            options={[
-              {
-                value: 'zh-CN',
-                label: '中文',
-              },
-              {
-                value: 'en-US',
-                label: '英文',
-              },
-            ]}
-          />
+          <Cascader changeOnSelect placeholder="/a/b/c" options={parentTree} />
         </Form.Item>
         <Form.Item label="权限描述" name="description">
           <Input.TextArea rows={3} />
