@@ -3,6 +3,7 @@ import {
   CreatePermissionRequest,
   CreatePermissionResult,
   RemovePermissionResult,
+  updatePermissionRequest,
 } from './permission.d'
 import request from './utils'
 // import { CommonResult } from './api-base.d'
@@ -21,4 +22,8 @@ export const createPermission = (data: CreatePermissionRequest) => {
 
 export const removePermission = (id: number) => {
   return request.post<RemovePermissionResult>('/permission/delete', { id })
+}
+
+export const updatePermission = (data: updatePermissionRequest) => {
+  return request.post<CreatePermissionResult>('/permission/update', data)
 }

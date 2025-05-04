@@ -23,6 +23,11 @@ export type CreatePermissionRequest = Omit<
   'id' | 'createdAt' | 'updatedAt' | 'subs'
 >
 
+export type updatePermissionRequest = Omit<
+  Permission,
+  'createdAt' | 'updatedAt' | 'subs'
+>
+
 export type CreatePermissionResult = CommonResult<Permission>
 
 export type RemovePermissionResult = CommonResult<boolean>

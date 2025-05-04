@@ -5,7 +5,7 @@ import PermissionHandleContent, {
   PermissionHandleContentProps,
 } from '../HandleContent'
 import { useAsyncFn } from 'react-use'
-import { createPermission } from '@/api/permission'
+import { createPermission, updatePermission } from '@/api/permission'
 import { useEffect } from 'react'
 import { Permission } from '@/api/permission.d'
 import { getTreePathById } from '@/utils/permission'
@@ -21,7 +21,7 @@ export interface PermissionHandleModalProps
 }
 
 const PermissionHandleModal = (props: PermissionHandleModalProps) => {
-  const { open, permissions, editTarget, onClose, onSuccess } = props
+  const { open, permissions, type, editTarget, onClose, onSuccess } = props
   const [form] = Form.useForm<PermissionFormValues>()
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const PermissionHandleModal = (props: PermissionHandleModalProps) => {
   }, [open])
 
   useEffect(() => {
-    if (open) {
+    if (open && type === HandleTypes.EDIT) {
       const parentPath = getTreePathById(
         permissions || [],
         editTarget?.parentId
@@ -49,17 +49,23 @@ const PermissionHandleModal = (props: PermissionHandleModalProps) => {
 
   const [submitState, doSubmit] = useAsyncFn(
     async (params: PermissionFormValues) => {
-      console.info(params)
       const { parent, ...mainData } = params
       await new Promise((resolve) => {
         setTimeout(resolve, 2000)
       })
-      await createPermission({
+      const requestParams = {
         ...mainData,
         parentId: parent ? parent[parent.length - 1] : undefined,
-      })
+      }
+
+      if (type === HandleTypes.ADD) {
+        await createPermission(mainData)
+      } else if (type === HandleTypes.EDIT) {
+        await updatePermission({ ...requestParams, id: editTarget!.id })
+      }
       onSuccess?.()
-    }
+    },
+    [type, editTarget]
   )
 
   const handleSubmit = async () => {

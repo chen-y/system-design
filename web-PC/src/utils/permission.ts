@@ -28,3 +28,19 @@ export function getTreePathById(tree: Permission[], id?: number) {
 
   return deepEach(tree)
 }
+
+type TreeArray = Array<number[]>
+export function getUniqueIdsByTreeArray(tree: TreeArray) {
+  const uniqueIds = new Set<number>()
+  const each = (arr: Array<number[] | number>) => {
+    for (const item of arr) {
+      if (Array.isArray(item)) {
+        each(item)
+      } else {
+        uniqueIds.add(item)
+      }
+    }
+  }
+  each(tree)
+  return Array.from(uniqueIds)
+}
