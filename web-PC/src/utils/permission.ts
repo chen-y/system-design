@@ -44,3 +44,18 @@ export function getUniqueIdsByTreeArray(tree: TreeArray) {
   each(tree)
   return Array.from(uniqueIds)
 }
+
+export function getPermissionNamesByTree(tree: Permission[]) {
+  const names: string[] = []
+  const deepEach = (nodes: Permission[], path: string[]) => {
+    for (const node of nodes) {
+      if (node.subs?.length) {
+        deepEach(node.subs, [...path, node.name])
+      } else {
+        names.push([...path, node.name].join('/'))
+      }
+    }
+  }
+  deepEach(tree, [])
+  return names
+}

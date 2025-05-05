@@ -1,10 +1,19 @@
 import { getRoleList, removeRole } from '@/api/role'
 import AppPage from '@/components/AppPage'
-import { Button, Modal, Space, Table, TableColumnProps } from 'antd'
+import {
+  Button,
+  Divider,
+  Modal,
+  Space,
+  Table,
+  TableColumnProps,
+  Typography,
+} from 'antd'
 import { useEffect, useState } from 'react'
 import { useAsyncFn } from 'react-use'
 import HandleModal, { HandleTypes } from './components/handleModal'
 import { Role } from '@/api/role.d'
+import { getPermissionNamesByTree } from '@/utils/permission'
 
 const RolesPage = () => {
   const [handleState, setHandleState] = useState<{
@@ -84,7 +93,27 @@ const RolesPage = () => {
     },
     {
       title: '权限',
+      dataIndex: 'permissions',
       key: 'permissions',
+      render(list) {
+        const names = list?.length ? getPermissionNamesByTree(list) : []
+        const content = names?.map((name, index) => {
+          return (
+            <span>
+              <span key={name}>{name}</span>
+              {index !== names.length - 1 && <Divider type="vertical" />}
+            </span>
+          )
+        })
+        return (
+          <Typography.Paragraph
+            ellipsis={{ rows: 2, tooltip: names.join(' | ') }}
+            style={{ maxWidth: '100%' }}
+          >
+            {content}
+          </Typography.Paragraph>
+        )
+      },
     },
     {
       title: '操作',

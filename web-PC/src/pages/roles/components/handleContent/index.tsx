@@ -50,7 +50,11 @@ const HandleContent = (props: HandleContentProps) => {
         <Input.TextArea rows={3} placeholder="请输入描述" maxLength={24} />
       </Form.Item>
       <Form.Item name="permissions" label="权限">
-        <Cascader options={parentTree} multiple></Cascader>
+        <Cascader
+          showCheckedStrategy="SHOW_CHILD"
+          options={parentTree}
+          multiple
+        ></Cascader>
       </Form.Item>
     </Form>
   )

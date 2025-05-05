@@ -5,6 +5,7 @@ import { useAsyncFn } from 'react-use'
 import { createRole, updateCreate } from '@/api/role'
 import { useEffect } from 'react'
 import { getUniqueIdsByTreeArray } from '@/utils/permission'
+import { Permission } from '@/api/permission.d'
 
 export { HandleTypes }
 
@@ -55,9 +56,27 @@ const HandleModal = (props: HandleModalProps) => {
 
   useEffect(() => {
     if (open && type === HandleTypes.EDIT) {
+      const getIdsByTree = (tree: Permission[]) => {
+        if (!tree?.length) {
+          return undefined
+        }
+        const ids: Array<number[]> = []
+        const deepEach = (nodes: Permission[], parents: number[]) => {
+          nodes.forEach((item) => {
+            if (item.subs?.length) {
+              deepEach(item.subs, [...parents, item.id])
+            } else {
+              ids.push([...parents, item.id])
+            }
+          })
+        }
+        deepEach(tree, [])
+        return ids
+      }
       form.setFieldsValue({
         name: target?.name,
         description: target?.description,
+        permissions: getIdsByTree(target?.permissions || []),
       })
     }
   }, [open, target, type])
@@ -72,7 +91,9 @@ const HandleModal = (props: HandleModalProps) => {
       footer={
         <div className="text-right">
           <Space>
-            <Button disabled={submitState.loading}>取消</Button>
+            <Button disabled={submitState.loading} onClick={onClose}>
+              取消
+            </Button>
             <Button
               type="primary"
               loading={submitState.loading}
