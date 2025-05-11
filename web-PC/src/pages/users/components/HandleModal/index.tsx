@@ -37,15 +37,6 @@ const HandleModal = (props: HandleModalProps) => {
     }
   }, [target, open, type])
 
-  const [{ value: roleList }, doGetRoleList] = useAsyncFn(async () => {
-    const result = await getRoleList()
-    return result?.data?.data || []
-  })
-
-  useEffect(() => {
-    doGetRoleList()
-  }, [])
-
   const [submitState, doSubmit] = useAsyncFn(async () => {
     const values = await form.validateFields()
 
