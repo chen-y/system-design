@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
@@ -21,8 +20,35 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionMapper.getPermissions();
     }
 
+    public void getPermissionsTreeByParents(List<Permission> permissions) {
+        for (Permission p: permissions) {
+            List<Permission> children = permissionMapper.getPermissionsWithParentId(p.getId());
+            if (children != null) {
+                p.setSubs(children);
+                getPermissionsTreeByParents(children);
+            }
+        }
+    };
+
     @Override
-    public Permission createPermission(Object params) {
+    public List<Permission> getPermissionTree() {
+        List<Permission> topPermissions = permissionMapper.getPermissionsWithNoParent();
+        getPermissionsTreeByParents(topPermissions);
+        return topPermissions;
+    }
+
+    @Override
+    public boolean createPermission(Object params) {
         return permissionMapper.createPermission(params);
+    }
+
+    @Override
+    public boolean removePermission(Integer id) {
+        return permissionMapper.removePermission(id);
+    }
+
+    @Override
+    public boolean updatePermission(Permission params) {
+        return permissionMapper.updatePermission(params);
     }
 }

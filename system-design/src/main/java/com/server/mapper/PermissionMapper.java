@@ -1,9 +1,7 @@
 package com.server.mapper;
 
 import com.server.pojo.Permission;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -12,6 +10,17 @@ public interface PermissionMapper {
     @Select("select * from permissions")
     List<Permission> getPermissions();
 
-    @Insert("insert into permissions (name, value, type, description, parent_id) values(#{name}, #{value}, #{type}, #{description}, #{parentId})")
-    Permission createPermission(Object p);
+    @Select("select * from permissions where parent_id is null")
+    List<Permission> getPermissionsWithNoParent();
+
+    @Select("select * from permissions where parent_id=#{parentId}")
+    List<Permission> getPermissionsWithParentId(Integer parentId);
+
+    List<Permission> getPermissionByIds(@Param("ids") List<Integer> ids);
+
+    boolean createPermission(Object p);
+
+    boolean removePermission(Integer id);
+
+    boolean updatePermission(Object p);
 }

@@ -16,3 +16,8 @@ spring:
   # secret
   jwt:
     secret: 'tk3GJ/jZtpnNIiIJNf1EmqYXjEFVeGCnBmB+ZgqC/lA='
+
+mybatis:
+  configuration:
+    mapUnderscoreToCamelCase: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

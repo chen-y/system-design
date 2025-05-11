@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.server.mapper.UserMapper">
+
+    <select id="getListByUserId">
+        select * from user_roles;
+    </select>
+
+    <select id="getUserRoles">
+        select * from user_roles where user_id = #{userId}
+    </select>
+
+    <insert id="addUserRoles">
+        insert into user_roles (user_id, role_ids) values
+        (#{userId}, #{rolesIds})
+    </insert>
+
+    <update id="updateUserRoles">
+        update user_roles
+        <set>
+            <if test="rolesIds != null">roles_ids = #{roleIds}</if>
+        </set>
+        where user_id=#{userId}
+    </update>
+</mapper>

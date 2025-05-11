@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.server.mapper.PermissionMapper">
+    <insert id="createPermission" parameterType="com.server.pojo.Permission">
+        insert into permissions (name, value, type, description, parent_id)
+        values(#{name}, #{value}, #{type}, #{description}, #{parentId})
+    </insert>
+    
+<!--    <select id="getPermissionsWithNoParent">-->
+<!--        select * from permissions where parent_id is null-->
+<!--    </select>-->
+<!--    -->
+<!--    <select id="getPermissionsWithParentId">-->
+<!--        select * from permissions where parent_id=#{parentId}-->
+<!--    </select>-->
+    <select id="getPermissionByIds">
+        select * from permissions where id in
+        <if test="ids != null and !ids.isEmpty()">
+            <foreach item="id" collection="ids" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
+    <delete id="removePermission">
+        delete from permissions where id=#{id}
+    </delete>
+
+    <update id="updatePermission">
+        update permissions
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="value != null">
+                value = #{value},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="description">
+                description = #{description}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

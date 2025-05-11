@@ -5,10 +5,7 @@ import com.server.pojo.User;
 import com.server.service.UserService;
 import com.server.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,13 +15,25 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     public Result<List<User>> getUserList() {
-        List<User> userList = userService.findAll();
+        List<User> userList = userService.getUsers();
         return Result.success(userList);
     }
 
-    @GetMapping("/test")
+    @PostMapping("/create")
+    public Result<Boolean> createUser(@RequestBody User user) {
+        Boolean isSuccess = userService.createUser(user);
+        return Result.success(isSuccess);
+    }
+
+    @PostMapping("/update")
+    public Result<Boolean> updateUser(@RequestBody User user) {
+        Boolean isSuccess = userService.updateUser(user);
+        return Result.success(isSuccess);
+    }
+
+    @PostMapping("/test")
     public String userTest() {
         return "pass";
     }

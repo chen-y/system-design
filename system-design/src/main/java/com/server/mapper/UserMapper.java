@@ -14,6 +14,10 @@ public interface UserMapper {
     @Select("select * from user")
     List<User> findAll();
 
+    List<User> getUsers();
+    Boolean createUser(User user);
+    Boolean updateUser(User user);
+
     @Select("select * from user where id = #{id}")
     Optional<User> findById(@Param("id") long id);
 

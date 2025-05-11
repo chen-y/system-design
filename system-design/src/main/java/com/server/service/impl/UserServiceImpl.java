@@ -18,4 +18,18 @@ public class UserServiceImpl implements UserService {
         var userList = userMapper.findAll();
         return userList;
     }
+
+    @Override
+    public List<User> getUsers() {
+        return userMapper.getUsers();
+    }
+
+    public Boolean createUser(User user) {
+        return userMapper.createUser(user);
+    }
+
+    @Override
+    public Boolean updateUser(User user) {
+        return userMapper.updateUser(user);
+    }
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.server.mapper.RolePermissionMapper">
+    <select id="getRolePermission">
+        select id, permission_ids permissionIds, role_id roleId  from role_permissions where role_id = #{roleId}
+    </select>
+
+    <insert id="createRolePermission">
+        insert into role_permissions (role_id, permission_ids)
+        values (#{roleId}, #{permissionIds})
+    </insert>
+
+    <update id="updateRolePermission">
+        update role_permissions set
+        <if test="permissionIds != null">
+            permission_ids = #{permissionIds}
+        </if>
+        where role_id = #{roleId}
+    </update>
+</mapper>

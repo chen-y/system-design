@@ -8,5 +8,11 @@ import java.util.Map;
 public interface PermissionService {
     List<Permission> getPermissions();
 
-    Permission createPermission(Object params);
+    List<Permission> getPermissionTree();
+
+    boolean createPermission(Object params);
+
+    boolean removePermission(Integer id);
+
+    boolean updatePermission(Permission params);
 }
