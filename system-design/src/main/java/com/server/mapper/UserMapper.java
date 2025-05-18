@@ -18,6 +18,8 @@ public interface UserMapper {
     Boolean createUser(User user);
     Boolean updateUser(User user);
 
+    Boolean deleteUser(Integer userId);
+
     @Select("select * from user where id = #{id}")
     Optional<User> findById(@Param("id") long id);
 

@@ -8,7 +8,7 @@
         user
     </select>
 
-    <insert id="createUser">
+    <insert id="createUser" useGeneratedKeys="true" keyProperty="id">
         insert into user (name, email, password, nick_name, mobile) values
         (#{name}, #{email}, #{password}, #{nickName}, #{mobile})
     </insert>
@@ -34,4 +34,7 @@
         </set>
         where id = #{id}
     </update>
+    <delete id="deleteUser">
+        delete from user where id = #{userId}
+    </delete>
 </mapper>

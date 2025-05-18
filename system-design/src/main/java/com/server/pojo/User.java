@@ -17,5 +17,5 @@ public class User {
     private String nickName;
     private String password;
     private List<Role> roles;
-//    private List<Integer> roleIds;
+    private List<Integer> roleIds;
 }

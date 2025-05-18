@@ -45,9 +45,6 @@ public class RoleServiceImpl implements RoleService {
                 }
             }
             List<Permission> array = perms.stream().filter((p) -> p.getParentId() == null).toList();
-            System.out.println("'array'");
-            System.out.println(array);
-
             return array;
         }
 

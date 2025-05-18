@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 declare module 'axios' {
   interface AxiosRequestConfig {
     secret?: boolean
+    showErrorTips?: boolean
   }
 }
 

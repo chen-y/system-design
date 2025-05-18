@@ -10,4 +10,6 @@ public interface UserService {
 
     Boolean createUser(User user);
     Boolean updateUser(User user);
+
+    Boolean deleteUser(Integer userId);
 }

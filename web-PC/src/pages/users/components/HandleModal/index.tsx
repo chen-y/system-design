@@ -32,7 +32,7 @@ const HandleModal = (props: HandleModalProps) => {
         name: target.name,
         email: target.email,
         password: target.password,
-        roles: target.roles,
+        roleIds: target.roles?.map((r) => r.id),
       })
     }
   }, [target, open, type])

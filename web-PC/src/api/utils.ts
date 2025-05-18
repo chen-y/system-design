@@ -1,10 +1,18 @@
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import request from './ajax'
+import { message } from 'antd'
 
 import auth from '@/utils/auth'
 
 class CustomError extends Error {
   response?: AxiosResponse
+}
+
+function handleErrorMassage(err: CustomError) {
+  const showErrorTips = err.response?.config?.showErrorTips ?? true
+  if (showErrorTips) {
+    message.error(err.message || '接口报错')
+  }
 }
 
 request.interceptors.request.use(async (config) => {
@@ -31,14 +39,22 @@ request.interceptors.request.use(async (config) => {
   return config
 })
 
-request.interceptors.response.use((response) => {
-  if (response.data?.code === 0) {
-    return response
+request.interceptors.response.use(
+  (response) => {
+    if (response.data?.code === 0) {
+      return response
+    }
+
+    const err = new CustomError(response.data?.data?.message || '接口报错')
+    err.response = response
+    handleErrorMassage(err)
+    return Promise.reject(err)
+  },
+  (err: AxiosError) => {
+    const newErr = new CustomError(err.message || '接口报错')
+    newErr.response = err.response
+    handleErrorMassage(newErr)
+    return Promise.reject(newErr)
   }
-
-  const err = new CustomError(response.data?.message || '接口报错')
-  err.response = response
-  return Promise.reject(err)
-})
-
+)
 export default request

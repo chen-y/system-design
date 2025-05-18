@@ -1,5 +1,13 @@
 import AppPage from '@/components/AppPage'
-import { Button, Modal, Space, Table, TableColumnProps } from 'antd'
+import {
+  Button,
+  Modal,
+  Space,
+  Table,
+  TableColumnProps,
+  Typography,
+  Divider,
+} from 'antd'
 import HandleModal, { HandleTypes } from './components/HandleModal'
 import { useEffect, useState } from 'react'
 import { deleteUser, User, getUserList } from '@/api/user'
@@ -47,6 +55,7 @@ const UserPage = () => {
       okType: 'danger',
       onOk: async () => {
         await deleteUser(user.id!)
+        await doGet()
       },
     })
   }
@@ -72,6 +81,25 @@ const UserPage = () => {
       title: '角色',
       dataIndex: 'roles',
       key: 'roles',
+      render(_, record) {
+        const names = record?.roles?.map((role) => role.name)
+        const content = names?.map((name, index) => {
+          return (
+            <span>
+              <span key={name}>{name}</span>
+              {index !== names.length - 1 && <Divider type="vertical" />}
+            </span>
+          )
+        })
+        return (
+          <Typography.Paragraph
+            ellipsis={{ rows: 2, tooltip: names?.join(' | ') }}
+            style={{ maxWidth: '100%', marginBottom: 0 }}
+          >
+            {content}
+          </Typography.Paragraph>
+        )
+      },
     },
     {
       title: '操作',

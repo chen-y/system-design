@@ -9,6 +9,8 @@ import java.util.List;
 public interface RoleMapper {
     List<Role> getRoles();
 
+    List<Role> getRolesByIds(List<Integer> roleIds);
+
     Boolean createRole(Role role);
     Boolean updateRole(Role role);
 

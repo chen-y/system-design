@@ -48,7 +48,7 @@ const HandleContent = (props: HandleContentProps) => {
       >
         <Input placeholder="请输入用户密码" />
       </Form.Item>
-      <Form.Item name="roles" label="账号角色">
+      <Form.Item name="roleIds" label="账号角色">
         <Select placeholder="请选择" mode="multiple">
           {roleList?.map((role) => {
             return (

@@ -7,6 +7,15 @@
         select * from roles
     </select>
 
+    <select id="getRolesByIds">
+        select * from roles where id in
+        <if test="roleIds != null and !roleIds.isEmpty()">
+            <foreach item="id" collection="roleIds" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
     <insert id="createRole" useGeneratedKeys="true" keyProperty="id">
         insert into roles (name, description, user_id)
         values (#{name}, #{description}, #{userId})

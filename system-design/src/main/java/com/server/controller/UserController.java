@@ -33,6 +33,12 @@ public class UserController {
         return Result.success(isSuccess);
     }
 
+    @PostMapping("/delete")
+    public Result<Boolean> deleteUser(@RequestBody User user) {
+        boolean isSuccess = userService.deleteUser(user.getId());
+        return Result.success(isSuccess);
+    }
+
     @PostMapping("/test")
     public String userTest() {
         return "pass";
