@@ -36,6 +36,10 @@ const AppMenu = () => {
             key: Path.USERS,
             label: '用户管理',
           },
+          {
+            key: Path.UPLOAD,
+            label: '文件上传',
+          },
         ]}
       />
     </div>

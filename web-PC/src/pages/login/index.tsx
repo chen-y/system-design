@@ -21,6 +21,10 @@ const Login = () => {
       setTimeout(resolve, 2000)
     })
 
+    // window.fetch('/api/auth/login', { method: 'POST' })
+
+    // return
+
     const result = await login(values as Required<FormValues>)
     // console.info(result.data.data)
     if (result.data?.data) {

@@ -42,6 +42,10 @@ const router = createBrowserRouter([
         path: Path.USERS,
         element: lazyLoading(lazy(() => import('../pages/users'))),
       },
+      {
+        path: Path.UPLOAD,
+        element: lazyLoading(lazy(() => import('../pages/upload'))),
+      },
     ],
   },
   {

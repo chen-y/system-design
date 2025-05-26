@@ -14,7 +14,9 @@ class WebSocketClient {
 
   onOpen() {
     if (this.socket) {
-      throw new Error('WebSocket is connected')
+      console.log('Connected to WebSocket server')
+
+      return
     }
     console.log('Connected to WebSocket server')
   }

@@ -6,4 +6,5 @@ export const Path = {
   PERMISSION: '/permission',
   ROLES: '/roles',
   USERS: '/users',
+  UPLOAD: '/upload',
 }
