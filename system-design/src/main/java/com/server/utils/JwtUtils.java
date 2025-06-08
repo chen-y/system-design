@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtUtils {
@@ -55,5 +56,13 @@ public class JwtUtils {
                 .parseSignedClaims(token)
                 .getPayload()
                 .get(uidKey);
+    }
+
+    public Integer getUidFromHeader(Map<String, String> header) {
+        String authorization = header.get("authorization");
+        String jwt = authorization.substring(7);
+        System.out.println(jwt);
+        Integer uid = getUidFromToken(jwt);
+        return uid;
     }
 }
